@@ -1,0 +1,5 @@
+tornado==5.1.1
+mysql-connector-python==8.0.13
+sqlalchemy==1.2.13
+wtforms==2.2.1
+pre-commit==1.11.1
