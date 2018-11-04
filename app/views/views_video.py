@@ -78,3 +78,31 @@ class ViewListHandler(tornado.web.RequestHandler):
                 data=[]
             )
         return arr
+
+
+class PlayChatHandler(tornado.web.RequestHandler):
+    def get(self, *args, **kwargs):
+        id = self.get_argument("id", None)
+        if id:
+            da = self.video(id)
+            data = {
+                "name": da.name,
+                "url": da.url,
+                "create_time": da.create_time,
+                "update_time": da.update_time,
+                "logo": da.logo
+            }
+            self.write(data)
+
+    def video(self, id):
+        session = ORM.db()
+        video = None
+        try:
+            video = session.query(Video).filter_by(id=int(id)).first()
+        except Exception:
+            session.rollback()
+        else:
+            session.commit()
+        finally:
+            session.close()
+        return video
