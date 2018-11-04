@@ -107,3 +107,5 @@ static/*
 
 uwsgi.ini
 celery.conf
+
+settings.py

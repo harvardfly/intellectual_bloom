@@ -1,0 +1,14 @@
+# coding:utf-8
+
+configs = {
+    "debug": False,
+}
+
+# mysql主机、端口、名称、用户、密码
+mysql_configs = {
+    "db_host": "",
+    "db_port": 3306,
+    "db_name": "chatroom_project",
+    "db_user": "",
+    "db_pwd": ""
+}
