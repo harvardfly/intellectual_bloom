@@ -12,3 +12,11 @@ mysql_configs = {
     "db_user": "",
     "db_pwd": ""
 }
+
+
+# redis主机、端口
+redis_configs = dict(
+    host="",
+    port=6379,
+    db=
+)

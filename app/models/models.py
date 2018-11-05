@@ -3,7 +3,7 @@
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column
 from sqlalchemy.dialects.mysql import (
-    INTEGER, VARCHAR, BIGINT, TINYINT
+    INTEGER, VARCHAR, BIGINT, TINYINT, TEXT
 )
 from werkzeug.security import check_password_hash  # 检查密码
 from app.settings import mysql_configs
@@ -37,17 +37,23 @@ class Video(BaseModel):
     logo = Column(VARCHAR(255), nullable=False)  # 视频缩图
 
 
+class Message(BaseModel):
+    __tablename__ = "message"
+    id = Column(BIGINT, primary_key=True)
+    create_time = Column(BIGINT, nullable=False)
+    update_time = Column(BIGINT, nullable=False)
+    content = Column(TEXT)
+
+
 if __name__ == "__main__":
     from sqlalchemy import create_engine  # 创建连接引擎
 
     # 主机、端口、名称、用户、密码
     mysql_configs = mysql_configs
-    # 连接信息，数据库类型+数据库连接驱动://用户:密码@主机:端口/数据库名称
-    # {} 槽，占位符
     mysql_uri = "mysql+mysqlconnector://{db_user}:{db_pwd}@{db_host}:{db_port}/{db_name}".format(
         **mysql_configs
     )
-    # 创建连接引擎，encoding编码，echo是[True]否[False]输出日志
+    # 创建连接引擎，encoding编码，echo是否输出日志
     engine = create_engine(
         mysql_uri,
         encoding="utf-8",

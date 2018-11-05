@@ -8,12 +8,14 @@ from app.settings import mysql_configs  # 导入连接配置
 class ORM:
     @classmethod
     def db(cls):
-        link = "mysql+mysqlconnector://{db_user}:{db_pwd}@{db_host}:{db_port}/{db_name}?charset=utf8".format(
+        mysql_uri = "mysql+mysqlconnector://" \
+                    "{db_user}:{db_pwd}@{db_host}:" \
+                    "{db_port}/{db_name}?charset=utf8".format(
             **mysql_configs
         )
         # 创建连接引擎，encoding编码，echo是[True]否[False]输出日志
         engine = create_engine(
-            link,
+            mysql_uri,
             encoding="utf-8",
             echo=False,
             pool_size=100,

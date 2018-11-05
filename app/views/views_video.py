@@ -1,8 +1,10 @@
 # coding:utf-8
 import math
+import json
 import tornado.web
 from app.tools.orm import ORM
 from app.models.models import Video
+from app.tools.redis_conn import get_redis_conn
 
 
 class ViewListHandler(tornado.web.RequestHandler):
@@ -106,3 +108,42 @@ class PlayChatHandler(tornado.web.RequestHandler):
         finally:
             session.close()
         return video
+
+
+# 弹幕
+class BarrageHandler(tornado.web.RequestHandler):
+    def get(self, *args, **kwargs):
+        id = self.get_argument("id", None)  # 视频ID
+        conn = get_redis_conn()
+        if id:
+            key = 'barrange{}'.format(id)
+            # value是个list  要用llen看是否有值
+            lens = conn.llen(key)
+            if lens:
+                data = conn.lrange(key, 0, lens)  # 列表
+                data = [json.loads(v) for v in data]  # json字符串，转化成字典
+                res = {
+                    "code": 0,
+                    "data": [
+                        [v['time'], v['type'], v['color'], v['author'], v['text']]
+                        for v in data
+                        ]
+                }
+            else:
+                res = {
+                    "code": 0,
+                    "data": []
+                }
+            self.write(res)
+
+    def post(self, *args, **kwargs):
+        data = self.request.body  # 二进制数据
+        data = json.loads(data.decode("utf-8"))
+        conn = get_redis_conn()
+        # 把数据推送至redis
+        conn.lpush('barrange{}'.format(data['id']), json.dumps(data))
+
+        self.write(dict(
+            code=0,
+            data=data
+        ))
