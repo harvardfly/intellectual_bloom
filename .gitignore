@@ -104,8 +104,11 @@ db.sql*
 .idea/*
 
 static/*
+media/*
 
 uwsgi.ini
 celery.conf
 
-settings.py
+settings_local.py
+
+keys/*
