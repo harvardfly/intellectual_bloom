@@ -1,4 +1,4 @@
-# intellectual_bloom寓意百花齐放，集知乎问答、博客园、抖音视频、聊天为一体。
+# intellectual_bloom寓意百花齐放，集知乎问答、博客园、聊天为一体。
 ```angular2html
 web框架：Tornado
 数据库：MySQL
